@@ -35,6 +35,10 @@ static int PatchedResetHNI(IOService *that) {
     DBGLOG(MODULE_SHORT, "AppleThunderboltNHI::resetNHI called");
     
     IOService *hal = that->getProvider();
+    for (uint32_t loc = 0x38000; loc <= 0x3B000; loc++) {
+        uint32_t three = HALRegisterRead32(hal, loc);
+        DBGLOG(MODULE_SHORT, "AppleThunderboltNHI::resetNHI: Register at 0x%08X = 0x%08X", loc, three);
+    }
     uint32_t reg = HALRegisterRead32(hal, REG_FW_STS);
     DBGLOG(MODULE_SHORT, "AppleThunderboltNHI::resetNHI: REG_FW_STS = 0x%08X", reg);
     reg |= REG_FW_STS_ICM_EN_INVERT;
